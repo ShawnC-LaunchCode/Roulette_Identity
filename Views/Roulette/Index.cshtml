@@ -1,5 +1,17 @@
 ﻿@model Roulette_Identity.ViewModels.RouletteViewModel;
 
+@*<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const divs = document.querySelectorAll("td[data-href]");
+        console.log(divs);
+        divs.forEach(div => {
+            div.addEventListener("click", () => {
+                @Model.LastSpinNumber = @Model.LastSpinNumber + "\n" + div.dataset.href;
+            });
+        });
+    });
+</script>*@
+
 <style>
     table, th, td {
         border: 2px solid black;
@@ -85,9 +97,9 @@
         </tr>
         <tr>
 
-            <td class="black">2</td>
-            <td class="red">5</td>
-            <td class="black">8</td>
+            <td class="black" data-href="./roulette/bet/2">2</td>
+            <td class="red" data-href="./roulette/bet/5">5</td>
+            <td class="black" data-href="./roulette/bet/8">8</td>
             <td class="red">11</td>
             <td class="black">14</td>
             <td class="red">17</td>
@@ -120,7 +132,7 @@
 <div>
     <img id="container" width="150" src="https://www.rebalance360.com/wp-content/uploads/2018/02/retirement_roulette.jpg" />
     <div id="LastSpinNumber">
-        @Model.LastSpinNumber.ToString()
+        @Model.LastSpinNumber
     </div>
 </div>
 
@@ -135,10 +147,13 @@
 <form method="post">
     <div>
         <label>Amount to bet:</label>
-        <input value="@Model.BetAmount"/>
+        <input type="number" value="@Model.BetAmount"/>
     </div>
     <input type="submit" value="Spin Wheel" />
 </form>
 <form method="post">
     <input type="submit" value="Reset Bets" />
 </form>
+<div>
+    <textarea rows="5" cols="80">@Model.LastSpinNumber + "hi"</textarea> 
+</div>
