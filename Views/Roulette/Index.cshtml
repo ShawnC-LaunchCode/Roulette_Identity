@@ -150,7 +150,7 @@
                     <option value="@i">@i</option>
                 }
             }
-            <option value="evens">Evens</option>
+            @*<option value="evens">Evens</option>*@
         </select>
     </span>
     <input type="submit" value="Place Bet"/>
@@ -158,7 +158,10 @@
 <form method="post" action="/Roulette/ResetBets">
     <input type="submit" value="Reset Bets" />
 </form>
-<input type="submit" value="Spin Wheel" />
+<form method="post" action="/Roulette/SpinWheel">
+    <input type="submit" value="Spin Wheel" />
+</form>
+
 
 <h1>Put table of current bets here</h1>
 @if (Model.Bets.Count != 0)

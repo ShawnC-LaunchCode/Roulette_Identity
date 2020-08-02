@@ -9,6 +9,7 @@ using Roulette_Identity.Areas.Identity.Data;
 using Roulette_Identity.ViewModels;
 using Roulette_Identity.Models;
 
+
 namespace Roulette_Identity.Controllers
 {
     public class RouletteController : Controller
@@ -17,6 +18,8 @@ namespace Roulette_Identity.Controllers
         private RouletteDbContext context;
         private readonly UserManager<IdentityUser> _userManager;
         private static List<Bet> bets = new List<Bet>();
+        private static int LastSpin = 0;
+        private static User user = new User("Shawn", 5000);
 
         public RouletteController(RouletteDbContext dbContext, UserManager<IdentityUser> userManager)
         {
@@ -27,24 +30,15 @@ namespace Roulette_Identity.Controllers
         public IActionResult Index()//everything to display to user 
         {
             var userId = _userManager.GetUserId(User);
-            //generate name and bank from User
-
-
-
-            int spinNumber = 25;//TODO make this random
-
-       
+            //TODO generate name and bank from User
 
             RouletteViewModel viewModel = new RouletteViewModel
             {
-                //Bets = bets,
                 Bets = bets,
                 BetAmount = 10,
-                Player = new User("Shawn", 5000),
-                LastSpinNumber = spinNumber
-
+                Player = user,
+                LastSpinNumber = LastSpin
             };
-
             return View(viewModel);
         }
 
@@ -52,13 +46,18 @@ namespace Roulette_Identity.Controllers
         [HttpPost]
         public IActionResult PlaceBet(int betAmount, string betType)
         {
-            Bet bet = new Bet
+            if (betAmount <= user.Bank)
             {
-                Amount = betAmount,
-                Type = betType
-            };
 
-            bets.Add(bet);
+                user.Bank -= betAmount;
+                Bet bet = new Bet
+                {
+                    Amount = betAmount,
+                    Type = betType
+                };
+
+                bets.Add(bet);
+            }
            
             return Redirect("/Roulette");
         }
@@ -68,6 +67,21 @@ namespace Roulette_Identity.Controllers
         {
             bets.Clear();
             return Redirect("/Roulette");
+        }
+
+        [HttpPost]
+        public IActionResult SpinWheel()
+        {
+            LastSpin = NewNumber();
+
+            return Redirect("/Roulette");
+        }
+
+        public int NewNumber()
+        {
+            Random rnd = new Random();
+            int next = rnd.Next(0, 37);
+            return next;
         }
     }
 }
