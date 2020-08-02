@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Roulette_Identity.Areas.Identity.Data;
 using Roulette_Identity.ViewModels;
 using Roulette_Identity.Models;
-
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace Roulette_Identity.Controllers
 {
@@ -17,6 +17,8 @@ namespace Roulette_Identity.Controllers
     {
         private RouletteDbContext context;
         private readonly UserManager<IdentityUser> _userManager;
+
+        //these can be stored in context
         private static List<Bet> bets = new List<Bet>();
         private static int LastSpin = 0;
         private static User user = new User("Shawn", 5000);
@@ -73,15 +75,48 @@ namespace Roulette_Identity.Controllers
         public IActionResult SpinWheel()
         {
             LastSpin = NewNumber();
+            PayBets();
+            //bets.Clear();
 
             return Redirect("/Roulette");
         }
 
-        public int NewNumber()
+        private int NewNumber()
         {
             Random rnd = new Random();
             int next = rnd.Next(0, 37);
             return next;
+        }
+
+        private void PayBets()
+        {
+            foreach (Bet bet in bets)
+            {
+                int betType = Int16.Parse(bet.Type);
+                int betCatagory; // 0== number bet(0-36),  37+==outside bets(evens, odds, high/low...)
+                if (betType >= 0 && betType <= 36)
+                {
+                    betCatagory = 0;
+                }
+                else
+                {
+                    betCatagory = betType;
+                }
+
+                    switch (betCatagory) {
+                    case 0 ://inside bets
+
+                       if (betType == LastSpin)
+                        {
+                            user.Bank += bet.Amount * 35;
+                        }
+                        break;
+
+                    default:
+                        break;
+            }
+
+            }
         }
     }
 }
