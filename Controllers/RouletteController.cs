@@ -66,7 +66,13 @@ namespace Roulette_Identity.Controllers
 
         [HttpPost]
         public IActionResult ResetBets()
-        {
+        {   
+            foreach(Bet bet in bets)
+            {
+                user.Bank += bet.Amount;
+            }
+
+
             bets.Clear();
             return Redirect("/Roulette");
         }
@@ -76,8 +82,16 @@ namespace Roulette_Identity.Controllers
         {
             LastSpin = NewNumber();
             PayBets();
-            //bets.Clear();
+            bets.Clear();
 
+            return Redirect("/Roulette");
+        }
+
+        [HttpPost]
+        public IActionResult ResetBank()
+        {
+            user.Bank = 5000;
+            bets.Clear();
             return Redirect("/Roulette");
         }
 
