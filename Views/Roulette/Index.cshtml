@@ -1,17 +1,5 @@
 ﻿@model Roulette_Identity.ViewModels.RouletteViewModel;
 
-@*<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const divs = document.querySelectorAll("td[data-href]");
-        console.log(divs);
-        divs.forEach(div => {
-            div.addEventListener("click", () => {
-                @Model.LastSpinNumber = @Model.LastSpinNumber + "\n" + div.dataset.href;
-            });
-        });
-    });
-</script>*@
-
 <style>
     table, th, td {
         border: 2px solid black;
@@ -50,6 +38,10 @@
         top: 275px;
         background-color: deeppink;
         font-size: 50px;
+    }
+
+    #BetSubmit{
+        border: solid black 2px;
     }
 </style>
 
@@ -97,9 +89,9 @@
         </tr>
         <tr>
 
-            <td class="black" data-href="./roulette/bet/2">2</td>
-            <td class="red" data-href="./roulette/bet/5">5</td>
-            <td class="black" data-href="./roulette/bet/8">8</td>
+            <td class="black">2</td>
+            <td class="red">5</td>
+            <td class="black">8</td>
             <td class="red">11</td>
             <td class="black">14</td>
             <td class="red">17</td>
@@ -144,16 +136,56 @@
     <label>Bank:</label>
     <text>@Model.Player.Bank</text>
 </div>
-<form method="post">
-    <div>
-        <label>Amount to bet:</label>
-        <input type="number" value="@Model.BetAmount"/>
-    </div>
-    <input type="submit" value="Spin Wheel" />
+<form method="post" id="BetSubmit" controller="Roulette" action="/Roulette/PlaceBet">
+    <span class="form-group">
+        <label for="betAmount">Amount to bet:</label>
+        <input name="betAmount" id="betAmount" type="number" value="@Model.BetAmount"/>
+    </span>
+    <span>
+        <label for="betType">On what? </label>
+        <select name="betType" id="betType" for="betType">
+            @{ 
+                for(int i = 0; i < 37; i++)
+                {
+                    <option value="@i">@i</option>
+                }
+            }
+            <option value="evens">Evens</option>
+        </select>
+    </span>
+    <input type="submit" value="Place Bet"/>
 </form>
-<form method="post">
+<form method="post" action="/Roulette/ResetBets">
     <input type="submit" value="Reset Bets" />
 </form>
-<div>
-    <textarea rows="5" cols="80">@Model.LastSpinNumber + "hi"</textarea> 
-</div>
+<input type="submit" value="Spin Wheel" />
+
+<h1>Put table of current bets here</h1>
+@if (Model.Bets.Count != 0)
+{
+    <table class="table">
+        <tr>
+            <th>
+                Bet Amount
+            </th>
+            <th>
+                On What
+            </th>
+        </tr>
+        @foreach(var bet in Model.Bets)
+        { Bet thisBet = bet;
+            <tr>
+                <td>
+                    @thisBet.Amount
+                </td>
+                <td>
+                    @thisBet.Type
+                </td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <h3>-No bets yet</h3>
+}

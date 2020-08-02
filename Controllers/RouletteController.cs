@@ -16,6 +16,7 @@ namespace Roulette_Identity.Controllers
     {
         private RouletteDbContext context;
         private readonly UserManager<IdentityUser> _userManager;
+        private static List<Bet> bets = new List<Bet>();
 
         public RouletteController(RouletteDbContext dbContext, UserManager<IdentityUser> userManager)
         {
@@ -32,10 +33,12 @@ namespace Roulette_Identity.Controllers
 
             int spinNumber = 25;//TODO make this random
 
+       
 
             RouletteViewModel viewModel = new RouletteViewModel
             {
-                bets = null,
+                //Bets = bets,
+                Bets = bets,
                 BetAmount = 10,
                 Player = new User("Shawn", 5000),
                 LastSpinNumber = spinNumber
@@ -43,6 +46,28 @@ namespace Roulette_Identity.Controllers
             };
 
             return View(viewModel);
+        }
+
+
+        [HttpPost]
+        public IActionResult PlaceBet(int betAmount, string betType)
+        {
+            Bet bet = new Bet
+            {
+                Amount = betAmount,
+                Type = betType
+            };
+
+            bets.Add(bet);
+           
+            return Redirect("/Roulette");
+        }
+
+        [HttpPost]
+        public IActionResult ResetBets()
+        {
+            bets.Clear();
+            return Redirect("/Roulette");
         }
     }
 }

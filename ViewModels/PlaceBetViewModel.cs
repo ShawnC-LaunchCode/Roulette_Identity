@@ -3,16 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Roulette_Identity.Models
+namespace Roulette_Identity.ViewModels
 {
-    public class Bet
+    public class PlaceBetViewModel
     {
         public string Type { get; set; }
         public int Amount { get; set; }
-
-        public Bet()
-        {
-
-        }
     }
 }

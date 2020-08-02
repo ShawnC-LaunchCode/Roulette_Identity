@@ -11,7 +11,7 @@ namespace Roulette_Identity.ViewModels
 
         //name-bank-BET-LIST(bets)
 
-        public List<Bet> bets;
+        public List<Bet> Bets { get; set; }
 
         public int BetAmount { get; set; }
         
