@@ -41,6 +41,7 @@ namespace Roulette_Identity.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false)
+                    //Bank = table.Column<int>(nullable:false)
                 },
                 constraints: table =>
                 {

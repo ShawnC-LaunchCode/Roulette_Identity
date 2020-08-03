@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Roulette_Identity.Areas.Identity.Data;
 
 namespace Roulette_Identity.Migrations
 {
     [DbContext(typeof(RouletteDbContext))]
-    partial class RouletteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200803045054_AddUserLevelToUser")]
+    partial class AddUserLevelToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

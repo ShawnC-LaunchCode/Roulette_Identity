@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Roulette_Identity.Models;
 
 namespace Roulette_Identity.Areas.Identity.Data
 {
-    public class RouletteDbContext : IdentityDbContext<IdentityUser>
+    public class RouletteDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<User> TheUsers { get; set; }
         public RouletteDbContext(DbContextOptions<RouletteDbContext> options)
             : base(options)
         {
