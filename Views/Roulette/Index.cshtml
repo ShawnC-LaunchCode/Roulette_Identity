@@ -40,13 +40,12 @@
         font-size: 50px;
     }
 
-    #BetSubmit {
+    #BetSubmit{
         border: solid black 2px;
     }
 </style>
 
 <h1>Welcome to the roulette Table!</h1>
-
 
 <div>
     <table>
@@ -128,8 +127,7 @@
         @Model.LastSpinNumber
     </div>
 </div>
-<p>Place as many bets as you would like then click spin wheel!</p>
-<p>If you run out of money, just click reset bank to go back to $5000</p>
+
 <div>
     <label>Name:</label>
     <text>@Model.Player.Username</text>
@@ -141,13 +139,13 @@
 <form method="post" id="BetSubmit" controller="Roulette" action="/Roulette/PlaceBet">
     <span class="form-group">
         <label for="betAmount">Amount to bet:</label>
-        <input name="betAmount" id="betAmount" type="number" value="@Model.BetAmount" />
+        <input name="betAmount" id="betAmount" type="number" value="@Model.BetAmount"/>
     </span>
     <span>
         <label for="betType">On what? </label>
         <select name="betType" id="betType" for="betType">
-            @{
-                for (int i = 0; i < 37; i++)
+            @{ 
+                for(int i = 0; i < 37; i++)
                 {
                     <option value="@i">@i</option>
                 }
@@ -155,7 +153,7 @@
             @*<option value="evens">Evens</option>*@
         </select>
     </span>
-    <input type="submit" value="Place Bet" />
+    <input type="submit" value="Place Bet"/>
 </form>
 <form method="post" action="/Roulette/ResetBets">
     <input type="submit" value="Reset Bets" />
@@ -165,11 +163,11 @@
 </form>
 
 <form method="post" action="/Roulette/ResetBank">
-    <input type="submit" value="Reset Bank" />
+    <input type="submit" value="Reset Bank"/>
 </form>
 
 
-
+<h1>Put table of current bets here</h1>
 @if (Model.Bets.Count != 0)
 {
     <table class="table">
@@ -181,9 +179,8 @@
                 On What
             </th>
         </tr>
-        @foreach (var bet in Model.Bets)
-        {
-            Bet thisBet = bet;
+        @foreach(var bet in Model.Bets)
+        { Bet thisBet = bet;
             <tr>
                 <td>
                     @thisBet.Amount
